@@ -1,0 +1,35 @@
+{
+  "master": {
+    "add": {
+      "card": {
+        "cardUID": "CD53E3C9"
+      }
+    },
+    "card": "false",
+    "cardUID": "0DD4D8C9",
+    "delete": {
+      "card": {
+        "cardUID": "A1D09B0F"
+      }
+    },
+    "password": "false"
+  },
+  "user": {
+    "card": {
+      "error": {
+        "cardUID": "90625813"
+      },
+      "pass": {
+        "cardUID": "23485F05"
+      }
+    },
+    "keypad": {
+      "pass": {
+        "anonymous": "true"
+      },
+      "wrong": {
+        "anonymous": "AB69C"
+      }
+    }
+  }
+}
