@@ -158,11 +158,15 @@
         function displayData(userData) {
             tableBody.innerHTML = '';
 
-            let stt = 1;
-
-            database.ref('rfid-management/card').once('value').then((snapshot) => {
+            database.ref('rfid-management/card').orderByChild('createdDate').once('value').then((snapshot) => {
+                const cardArray = [];
                 snapshot.forEach((childSnapshot) => {
-                    const cardData = childSnapshot.val();
+                    cardArray.push(childSnapshot.val());
+                });
+                cardArray.reverse(); // Đảo ngược thứ tự để hiển thị mới nhất ở đầu
+
+                let stt = 1;
+                cardArray.forEach((cardData) => {
                     const tr = document.createElement('tr');
                     const dateCreated = new Date(cardData.createdDate).toLocaleDateString();
                     tr.innerHTML = `
@@ -175,13 +179,14 @@
                     </div>
                 </td>
             `;
-                    tableBody.insertAdjacentElement('afterbegin', tr);
+                    tableBody.appendChild(tr);
                     stt++;
                 });
             }).catch((error) => {
                 console.error("Đã xảy ra lỗi khi lấy dữ liệu từ rfid-management/card:", error);
             });
         }
+
 
 
 
@@ -225,20 +230,15 @@
                 closeOnEsc: false,
             }).then((value) => {
                 if (value) {
-                    database.ref('rfid/master/add/card').once('value').then((snapshot) => {
-                        if (snapshot.exists() && snapshot.val().cardUID === value) {
+                    const cardUID = value.trim();
+                    database.ref('rfid-management/master/add/card').orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
+                        if (snapshot.exists()) {
                             throw new Error('Thẻ đã tồn tại');
-                        } else {
-                            return database.ref('rfid-management/master/add/card').once('value');
-                        }
-                    }).then((snapshot) => {
-                        if (snapshot.exists() && Object.values(snapshot.val()).some((card) => card.cardUID === value)) {
-                            throw new Error('Thẻ đã tồn tại trong rfid-management/master/add/card');
                         } else {
                             const currentDate = new Date().toISOString();
                             return Promise.all([
-                                database.ref('rfid/master/add/card').set({ cardUID: value }),
-                                database.ref('rfid-management/card').push({ cardUID: value, createdDate: currentDate })
+                                database.ref('rfid/master/add/card').set({ cardUID: cardUID }),
+                                database.ref('rfid-management/master/add/card').push({ cardUID: cardUID, createdDate: currentDate })
                             ]);
                         }
                     }).then(() => {
@@ -260,6 +260,7 @@
                 }
             });
         });
+
 
     </script>
     <script>
