@@ -231,14 +231,14 @@
             }).then((value) => {
                 if (value) {
                     const cardUID = value.trim();
-                    database.ref('rfid-management/master/add/card').orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
+                    database.ref('rfid-management/card').orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
                         if (snapshot.exists()) {
                             throw new Error('Thẻ đã tồn tại');
                         } else {
                             const currentDate = new Date().toISOString();
                             return Promise.all([
                                 database.ref('rfid/master/add/card').set({ cardUID: cardUID }),
-                                database.ref('rfid-management/master/add/card').push({ cardUID: cardUID, createdDate: currentDate })
+                                database.ref('rfid-management/card').push({ cardUID: cardUID, createdDate: currentDate })
                             ]);
                         }
                     }).then(() => {
