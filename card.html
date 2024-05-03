@@ -98,6 +98,7 @@
 
         <!-- MAIN -->
         <main>
+            <audio id="sound" src="noti.mp3"></audio>
             <div class="head-title">
                 <div class="left">
                     <h1>QUẢN LÍ THẺ</h1>
@@ -153,6 +154,18 @@
     <script src="script.js"></script>
     <script src="toggle.js"></script>
     <script>
+        firebase.database().ref('rfid/master/add/').on('child_changed', function (snapshot) {
+            const data = snapshot.val();
+            const currentDate = new Date().toISOString();
+            firebase.database().ref('rfid-management/card').push({
+                cardUID: data.cardUID, createdDate: currentDate
+            });
+            displayData()
+            const sound = document.getElementById('sound');
+            sound.play();
+        });
+    </script>
+    <script>
         const tableBody = document.querySelector(".table-data tbody");
 
         function displayData(userData) {
@@ -163,7 +176,7 @@
                 snapshot.forEach((childSnapshot) => {
                     cardArray.push(childSnapshot.val());
                 });
-                cardArray.reverse(); // Đảo ngược thứ tự để hiển thị mới nhất ở đầu
+                cardArray.reverse();
 
                 let stt = 1;
                 cardArray.forEach((cardData) => {
