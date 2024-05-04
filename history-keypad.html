@@ -2,21 +2,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Boxicons -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- My CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
     <title>Lịch sử</title>
 </head>
 
 <body>
-
-
     <!-- SIDEBAR -->
     <section id="sidebar">
         <a href="#" class="brand">
@@ -26,25 +24,25 @@
         <ul class="side-menu top">
             <li>
                 <a href="index.html">
-                    <i class='bx bxs-dashboard'></i>
+                    <i class="bx bxs-dashboard"></i>
                     <span class="text">Trang chủ</span>
                 </a>
             </li>
             <li>
                 <a href="card.html">
-                    <i class='bx bx-memory-card'></i>
+                    <i class="bx bx-memory-card"></i>
                     <span class="text">Quản lí thẻ</span>
                 </a>
             </li>
             <li>
                 <a href="history-card.html">
-                    <i class='bx bx-history'></i>
+                    <i class="bx bx-history"></i>
                     <span class="text">Lịch sử thẻ</span>
                 </a>
             </li>
             <li class="active">
                 <a href="history-keypad.html">
-                    <i class='bx bx-history'></i>
+                    <i class="bx bx-history"></i>
                     <span class="text">Lịch sử keypad</span>
                 </a>
             </li>
@@ -52,7 +50,7 @@
         <ul class="side-menu">
             <li>
                 <a href="#" class="logout">
-                    <i class='bx bxs-log-out-circle'></i>
+                    <i class="bx bxs-log-out-circle"></i>
                     <span class="text">Logout</span>
                 </a>
             </li>
@@ -60,27 +58,27 @@
     </section>
     <!-- SIDEBAR -->
 
-
-
     <!-- CONTENT -->
     <section id="content">
         <!-- NAVBAR -->
         <nav>
-            <i class='bx bx-menu'></i>
+            <i class="bx bx-menu"></i>
             <form action="#">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                    <input type="search" placeholder="Search..." />
+                    <button type="submit" class="search-btn">
+                        <i class="bx bx-search"></i>
+                    </button>
                 </div>
             </form>
-            <input type="checkbox" id="switch-mode" hidden>
+            <input type="checkbox" id="switch-mode" hidden />
             <label for="switch-mode" class="switch-mode"></label>
             <a href="#" class="notification">
-                <i class='bx bxs-bell'></i>
+                <i class="bx bxs-bell"></i>
                 <span class="num">8</span>
             </a>
             <a href="#" class="profile">
-                <img src="img/avatar.jpg">
+                <img src="img/avatar.jpg" />
             </a>
         </nav>
         <!-- NAVBAR -->
@@ -95,25 +93,24 @@
                         <li>
                             <a href="#">Dashboard</a>
                         </li>
-                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li><i class="bx bx-chevron-right"></i></li>
                         <li>
                             <a class="active" href="#">History Keypad</a>
                         </li>
                     </ul>
                 </div>
                 <a href="#" class="btn-download">
-                    <i class='bx bxs-cloud-download'></i>
+                    <i class="bx bxs-cloud-download"></i>
                     <span class="text">Download Excel</span>
                 </a>
             </div>
-
 
             <div class="table-data">
                 <div class="order">
                     <div class="head">
                         <h3>History</h3>
-                        <i class='bx bx-search'></i>
-                        <i class='bx bx-filter'></i>
+                        <i class="bx bx-search"></i>
+                        <i class="bx bx-filter"></i>
                     </div>
                     <table id="history-table">
                         <thead>
@@ -127,9 +124,7 @@
                                 </tr>
                             </thead>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -137,7 +132,6 @@
         <!-- MAIN -->
     </section>
     <!-- CONTENT -->
-
 
     <script src="script.js"></script>
     <script src="toggle.js"></script>
@@ -148,111 +142,131 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
     <script src="config-firebase.js"></script>
     <script>
-        firebase.database().ref('rfid/user/keypad/wrong').on('child_changed', function (snapshot) {
-            const data = snapshot.val();
+        firebase
+            .database()
+            .ref("rfid/user/keypad/wrong")
+            .on("child_changed", function (snapshot) {
+                const data = snapshot.val();
 
-            const currentTime = new Date().toISOString();
+                const currentTime = new Date().toISOString();
 
-            // Thêm dữ liệu vào history
-            firebase.database().ref('rfid-management/history-keypad').push({
-                Password: data,
-                Status: 'Error',
-                'Thời gian vào': currentTime,
-                'Thời gian ra': ''
+                // Thêm dữ liệu vào history
+                firebase.database().ref("rfid-management/history-keypad").push({
+                    Password: data,
+                    Status: "Error",
+                    "Thời gian vào": currentTime,
+                    "Thời gian ra": "",
+                });
             });
-        });
 
-        firebase.database().ref('rfid/user/keypad/pass').on('child_changed', function (snapshot) {
-            const data = snapshot.val();
-            const currentTime = new Date().toISOString();
+        firebase
+            .database()
+            .ref("rfid/user/keypad/pass")
+            .on("child_changed", function (snapshot) {
+                const data = snapshot.val();
+                const currentTime = new Date().toISOString();
 
-            firebase.database().ref('rfid-management/history-keypad').once('value', function (snapshot) {
-                let foundEmptyTime = false;
+                firebase
+                    .database()
+                    .ref("rfid-management/history-keypad")
+                    .once("value", function (snapshot) {
+                        let foundEmptyTime = false;
 
-                snapshot.forEach(function (childSnapshot) {
-                    const historyKey = childSnapshot.key;
-                    const historyItem = childSnapshot.val();
+                        snapshot.forEach(function (childSnapshot) {
+                            const historyKey = childSnapshot.key;
+                            const historyItem = childSnapshot.val();
 
-                    console.log(historyItem)
+                            console.log(historyItem);
 
-                    if (historyItem['IdCard'] === data) {
-                        if (historyItem['Thời gian ra'] === '') {
-                            foundEmptyTime = true;
-                            firebase.database().ref('rfid-management/history-keypad/' + historyKey).update({
-                                'Thời gian ra': currentTime
+                            if (historyItem["IdCard"] === data) {
+                                if (historyItem["Thời gian ra"] === "") {
+                                    foundEmptyTime = true;
+                                    firebase
+                                        .database()
+                                        .ref("rfid-management/history-keypad/" + historyKey)
+                                        .update({
+                                            "Thời gian ra": currentTime,
+                                        });
+                                }
+                            }
+                        });
+
+                        if (!foundEmptyTime) {
+                            firebase.database().ref("rfid-management/history-keypad").push({
+                                IdCard: data,
+                                Password: data,
+                                Status: "Pass",
+                                "Thời gian vào": currentTime,
+                                "Thời gian ra": "",
                             });
                         }
-                    }
-                });
-
-                if (!foundEmptyTime) {
-                    firebase.database().ref('rfid-management/history-keypad').push({
-                        IdCard: data,
-                        Password: data,
-                        Status: 'Pass',
-                        'Thời gian vào': currentTime,
-                        'Thời gian ra': ''
                     });
-                }
             });
-        });
-
     </script>
     <script>
         let previousKeyPadData = {};
         let isFirstLoad = true;
-        firebase.database().ref('rfid-management/history-keypad').on('value', function (snapshot) {
-            const newData = snapshot.val(); // Dữ liệu mới từ Firebase
-            const tableBody = document.querySelector('#history-table tbody');
-            tableBody.innerHTML = '';
+        firebase
+            .database()
+            .ref("rfid-management/history-keypad")
+            .on("value", function (snapshot) {
+                const newData = snapshot.val(); // Dữ liệu mới từ Firebase
+                const tableBody = document.querySelector("#history-table tbody");
+                tableBody.innerHTML = "";
 
-            const newDataArray = Object.entries(newData).reverse();
+                const newDataArray = Object.entries(newData).reverse();
 
-            newDataArray.forEach(function ([historyKey, historyItem], index) {
-                const tr = document.createElement('tr');
-                const statusClass = historyItem.Status === 'Pass' ? 'status completed' : 'status pending';
+                newDataArray.forEach(function ([historyKey, historyItem], index) {
+                    const tr = document.createElement("tr");
+                    const statusClass =
+                        historyItem.Status === "Pass"
+                            ? "status completed"
+                            : "status pending";
 
-                // Định dạng thời gian vào
-                const timeIn = new Date(historyItem['Thời gian vào']);
-                const formattedTimeIn = `${timeIn.getDate()}/${timeIn.getMonth() + 1}/${timeIn.getFullYear()} ${timeIn.getHours()}:${timeIn.getMinutes()}:${timeIn.getSeconds()}`;
+                    // Định dạng thời gian vào
+                    const timeIn = new Date(historyItem["Thời gian vào"]);
+                    const formattedTimeIn = `${timeIn.getDate()}/${timeIn.getMonth() + 1
+                        }/${timeIn.getFullYear()} ${timeIn.getHours()}:${timeIn.getMinutes()}:${timeIn.getSeconds()}`;
 
-                // Định dạng thời gian ra
-                let formattedTimeOut = '--';
-                if (historyItem['Thời gian ra']) {
-                    const timeOut = new Date(historyItem['Thời gian ra']);
-                    formattedTimeOut = `${timeOut.getDate()}/${timeOut.getMonth() + 1}/${timeOut.getFullYear()} ${timeOut.getHours()}:${timeOut.getMinutes()}:${timeOut.getSeconds()}`;
-                }
+                    // Định dạng thời gian ra
+                    let formattedTimeOut = "--";
+                    if (historyItem["Thời gian ra"]) {
+                        const timeOut = new Date(historyItem["Thời gian ra"]);
+                        formattedTimeOut = `${timeOut.getDate()}/${timeOut.getMonth() + 1
+                            }/${timeOut.getFullYear()} ${timeOut.getHours()}:${timeOut.getMinutes()}:${timeOut.getSeconds()}`;
+                    }
 
-                tr.innerHTML = `
+                    console.log(historyItem.Status)
+                    tr.innerHTML = `
         <td>${index + 1}</td>
-        <td>*101#</td>
+        <td>${historyItem.Status === "Pass" ? "*101#" : historyItem.Password
+                        }</td>
         <td><span class="${statusClass}">${historyItem.Status}</span></td>
         <td>${formattedTimeIn}</td>
         <td>${formattedTimeOut}</td>
     `;
 
-                if (!isFirstLoad) {
-                    if (isDataChanged(historyKey, historyItem)) {
-                        tr.classList.add('highlight');
-                        setTimeout(() => {
-                            tr.classList.remove('highlight');
-                        }, 1000);
+                    if (!isFirstLoad) {
+                        if (isDataChanged(historyKey, historyItem)) {
+                            tr.classList.add("highlight");
+                            setTimeout(() => {
+                                tr.classList.remove("highlight");
+                            }, 1000);
+                        }
                     }
+
+                    tableBody.appendChild(tr);
+                });
+
+                // Cập nhật dữ liệu trước đó với dữ liệu mới
+                previousKeyPadData = newData;
+                if (isFirstLoad) {
+                    isFirstLoad = false;
+                } else {
+                    const sound = document.getElementById("sound");
+                    sound.play();
                 }
-
-                tableBody.appendChild(tr);
             });
-
-            // Cập nhật dữ liệu trước đó với dữ liệu mới
-            previousKeyPadData = newData;
-            if (isFirstLoad) {
-                isFirstLoad = false;
-            } else {
-                const sound = document.getElementById('sound');
-                sound.play();
-            }
-        });
-
 
         function isDataChanged(key, newData) {
             const previousItem = previousKeyPadData[key];
@@ -262,29 +276,27 @@
 
             return JSON.stringify(newData) !== JSON.stringify(previousItem);
         }
-
     </script>
     <script>
-        if (!localStorage.getItem('username-iot')) {
+        if (!localStorage.getItem("username-iot")) {
             window.location.href = "login.html";
         }
-        const logoutBtn = document.querySelector('.logout');
-        logoutBtn.addEventListener('click', handleLogout);
+        const logoutBtn = document.querySelector(".logout");
+        logoutBtn.addEventListener("click", handleLogout);
         function handleLogout() {
             swal({
-                title: 'Xác nhận đăng xuất',
+                title: "Xác nhận đăng xuất",
                 text: "Bạn sẽ được chuyển hướng đến trang đăng nhập.",
-                icon: 'warning',
+                icon: "warning",
                 buttons: true,
                 dangerMode: true,
-            })
-                .then((willLogout) => {
-                    if (willLogout) {
-                        localStorage.removeItem('username-iot');
-                        localStorage.removeItem('password-iot');
-                        window.location.href = "login.html";
-                    }
-                });
+            }).then((willLogout) => {
+                if (willLogout) {
+                    localStorage.removeItem("username-iot");
+                    localStorage.removeItem("password-iot");
+                    window.location.href = "login.html";
+                }
+            });
         }
     </script>
 </body>
