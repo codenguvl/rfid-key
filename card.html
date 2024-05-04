@@ -154,16 +154,51 @@
     <script src="script.js"></script>
     <script src="toggle.js"></script>
     <script>
+        firebase.database().ref('rfid/master/delete/').on('child_changed', function (snapshot) {
+            const data = snapshot.val();
+            const cardUID = data.cardUID
+
+            const cardRef = firebase.database().ref('rfid-management/card');
+            cardRef.orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const key = childSnapshot.key;
+                        cardRef.child(key).remove();
+                        displayData();
+                        const sound = document.getElementById('sound');
+                        sound.play();
+                        console.log(`Thẻ có cardUID ${cardUID} đã bị xóa.`);
+                    });
+                } else {
+                    console.log(`Thẻ có cardUID ${cardUID} không tồn tại.`);
+                }
+            }).catch((error) => {
+                console.error('Đã xảy ra lỗi khi kiểm tra thẻ:', error);
+            });
+        });
+
+    </script>
+    <script>
         firebase.database().ref('rfid/master/add/').on('child_changed', function (snapshot) {
             const data = snapshot.val();
             const currentDate = new Date().toISOString();
-            firebase.database().ref('rfid-management/card').push({
-                cardUID: data.cardUID, createdDate: currentDate
+            const cardUID = data.cardUID;
+            const cardRef = firebase.database().ref('rfid-management/card');
+
+            cardRef.orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    throw new Error('Thẻ đã tồn tại');
+                } else {
+                    cardRef.push({ cardUID: cardUID, createdDate: currentDate });
+                    displayData();
+                    const sound = document.getElementById('sound');
+                    sound.play();
+                }
+            }).catch((error) => {
+                console.error('Đã xảy ra lỗi khi kiểm tra thẻ:', error);
             });
-            displayData()
-            const sound = document.getElementById('sound');
-            sound.play();
         });
+
     </script>
     <script>
         const tableBody = document.querySelector(".table-data tbody");
@@ -176,6 +211,7 @@
                 snapshot.forEach((childSnapshot) => {
                     cardArray.push(childSnapshot.val());
                 });
+                console.log(cardArray)
                 cardArray.reverse();
 
                 let stt = 1;
@@ -242,8 +278,26 @@
                 closeOnClickOutside: false,
                 closeOnEsc: false,
             }).then((value) => {
+                if (value === null || value.trim() === '') {
+                    swal({
+                        title: "Lỗi!",
+                        text: "Vui lòng nhập ID Card.",
+                        icon: "error",
+                        button: "OK",
+                    });
+                    return;
+                }
                 if (value) {
                     const cardUID = value.trim();
+                    if (cardUID.length !== 8) {
+                        swal({
+                            title: "Lỗi!",
+                            text: "ID Card phải có đúng 8 ký tự.",
+                            icon: "error",
+                            button: "OK",
+                        });
+                        return;
+                    }
                     database.ref('rfid-management/card').orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
                         if (snapshot.exists()) {
                             throw new Error('Thẻ đã tồn tại');
@@ -367,6 +421,29 @@
             }
         });
 
+    </script>
+    <script>
+        if (!localStorage.getItem('username-iot')) {
+            window.location.href = "login.html";
+        }
+        const logoutBtn = document.querySelector('.logout');
+        logoutBtn.addEventListener('click', handleLogout);
+        function handleLogout() {
+            swal({
+                title: 'Xác nhận đăng xuất',
+                text: "Bạn sẽ được chuyển hướng đến trang đăng nhập.",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willLogout) => {
+                    if (willLogout) {
+                        localStorage.removeItem('username-iot');
+                        localStorage.removeItem('password-iot');
+                        window.location.href = "login.html";
+                    }
+                });
+        }
     </script>
 </body>
 

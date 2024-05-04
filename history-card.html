@@ -7,6 +7,7 @@
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- My CSS -->
     <link rel="stylesheet" href="style.css">
 
@@ -258,6 +259,29 @@
 
 
 
+    </script>
+    <script>
+        if (!localStorage.getItem('username-iot')) {
+            window.location.href = "login.html";
+        }
+        const logoutBtn = document.querySelector('.logout');
+        logoutBtn.addEventListener('click', handleLogout);
+        function handleLogout() {
+            swal({
+                title: 'Xác nhận đăng xuất',
+                text: "Bạn sẽ được chuyển hướng đến trang đăng nhập.",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willLogout) => {
+                    if (willLogout) {
+                        localStorage.removeItem('username-iot');
+                        localStorage.removeItem('password-iot');
+                        window.location.href = "login.html";
+                    }
+                });
+        }
     </script>
 </body>
 
