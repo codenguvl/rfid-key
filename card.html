@@ -298,6 +298,16 @@
                         });
                         return;
                     }
+                    const specialCharacters = /[!@#$%^&*()_+={}\[\]:;<>,.?~]/;
+                    if (specialCharacters.test(cardUID)) {
+                        swal({
+                            title: "Lỗi!",
+                            text: "ID Card không được chứa ký tự đặc biệt.",
+                            icon: "error",
+                            button: "OK",
+                        });
+                        return;
+                    }
                     database.ref('rfid-management/card').orderByChild('cardUID').equalTo(cardUID).once('value').then((snapshot) => {
                         if (snapshot.exists()) {
                             throw new Error('Thẻ đã tồn tại');
